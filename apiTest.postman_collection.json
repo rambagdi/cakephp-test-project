@@ -21,7 +21,7 @@
 					},
 					{
 						"key": "Access-token",
-						"value": "7f7408aa5dcb0773c45c957a2829fd40",
+						"value": "2d6ea7701d6d0b626e0e1e144f3c745f",
 						"type": "text"
 					}
 				],
@@ -66,13 +66,13 @@
 					},
 					{
 						"key": "Access-token",
-						"value": "7f7408aa5dcb0773c45c957a2829fd40",
+						"value": "2d6ea7701d6d0b626e0e1e144f3c745f",
 						"type": "text"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"title\": \"CakePHP1\",\n\t\"body\": \"This is a CakePHP Development\",\n\t\"user_id\": 2\n}",
+					"raw": "{\n\t\"title\": \"CakePHP1\",\n\t\"body\": \"This is a CakePHP Development\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -382,13 +382,13 @@
 					},
 					{
 						"key": "Access-token",
-						"value": "7f7408aa5dcb0773c45c957a2829fd40",
+						"value": "2d6ea7701d6d0b626e0e1e144f3c745f",
 						"type": "text"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"user_id\": 2,\n    \"article_id\": 2\n}",
+					"raw": "{\n    \"article_id\": 2\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -493,6 +493,32 @@
 					"path": [
 						"api",
 						"logout.json"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get likes",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Access-token",
+						"value": "2d6ea7701d6d0b626e0e1e144f3c745f",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:34251/api/likes.json",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "34251",
+					"path": [
+						"api",
+						"likes.json"
 					]
 				}
 			},

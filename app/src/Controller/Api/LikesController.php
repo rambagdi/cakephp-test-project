@@ -11,12 +11,15 @@ class LikesController extends AppController
     {
         parent::initialize();
         $this->loadModel('Likes');
+        $this->loadModel('Articles');
     }
 	
     public function add()
     {
+        $this->request->allowMethod(['post']);
     	$header = $this->request->getHeaders();
-        if(!$this->verifyToken($header)){
+    	$auth = $this->verifyToken($header);
+        if(!$auth){
 		$this->set([
 		    'status' => false,
 		    'message' => 'Invalid token',
@@ -24,14 +27,14 @@ class LikesController extends AppController
 		$this->viewBuilder()->setOption('serialize', ['status', 'message']);
 		return;
         }
-        $this->request->allowMethod(['post']);
+        
 
         // form data
         $formData = $this->request->getData();
 
         // user_id check rules
         $likeData = $this->Likes->find()->where([
-            'user_id' => $formData['user_id'],
+            'user_id' => $auth['id'],
             'article_id' => $formData['article_id'],
         ])->first();
 
@@ -42,11 +45,18 @@ class LikesController extends AppController
         } else {
             // insert new article
             $likeObject = $this->Likes->newEmptyEntity();
-
+            $likeObject->user_id = $auth['id'];
             $articleObject = $this->Likes->patchEntity($likeObject, $formData);
 
             if ($this->Likes->save($articleObject)) {
                 // success response
+                $articleData = $this->Articles->find()->where([
+		    'id' => $formData['article_id']
+		])->first();
+		
+		$articleData->count = $articleData->count+1;
+		$this->Articles->save($articleData);
+
                 $status = true;
                 $message = 'Like has been created';
             } else {
@@ -66,7 +76,8 @@ class LikesController extends AppController
     public function index()
     {
     	 $header = $this->request->getHeaders();
-        if(!$this->verifyToken($header)){
+    	 $auth = $this->verifyToken($header);
+        if(!$auth){
 		$this->set([
 		    'status' => false,
 		    'message' => 'Invalid token',
@@ -77,7 +88,9 @@ class LikesController extends AppController
         
         $this->request->allowMethod(['get']);
 
-        $likes = $this->Likes->find()->toList();
+        $likes = $this->Likes->find()->where([
+		    'user_id' => $auth["id"]
+		])->toList();
 
         $this->set([
             'status' => true,

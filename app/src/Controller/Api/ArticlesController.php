@@ -16,7 +16,8 @@ class ArticlesController extends AppController
     public function add()
     {
     	$header = $this->request->getHeaders();
-        if(!$this->verifyToken($header)){
+    	$auth = $this->verifyToken($header);
+        if(!$auth){
 		$this->set([
 		    'status' => false,
 		    'message' => 'Invalid token',
@@ -42,7 +43,8 @@ class ArticlesController extends AppController
         } else {
             // insert new article
             $articleObject = $this->Articles->newEmptyEntity();
-
+            $articleObject->user_id = $auth['id'];
+            $articleObject->count = 0;	
             $articleObject = $this->Articles->patchEntity($articleObject, $formData);
 
             if ($this->Articles->save($articleObject)) {
@@ -66,7 +68,8 @@ class ArticlesController extends AppController
     public function index()
     {
     	$header = $this->request->getHeaders();
-        if(!$this->verifyToken($header)){
+    	$auth = $this->verifyToken($header);
+        if(!$auth){
 		$this->set([
 		    'status' => false,
 		    'message' => 'Invalid token',
@@ -74,7 +77,35 @@ class ArticlesController extends AppController
 		$this->viewBuilder()->setOption('serialize', ['status', 'message']);
 		return;
         }
-        
+
+        $this->request->allowMethod(['get']);
+
+        $articles = $this->Articles->find()->where([
+            'user_id' => $auth['id']
+        ])->toList();
+
+        $this->set([
+            'status' => true,
+            'message' => 'Article list',
+            'data' => $articles
+        ]);
+
+        $this->viewBuilder()->setOption('serialize', ['status', 'message', 'data']);
+    }	
+    
+    public function getAll()
+    {
+    	$header = $this->request->getHeaders();
+    	$auth = $this->verifyToken($header);
+        if(!$auth){
+		$this->set([
+		    'status' => false,
+		    'message' => 'Invalid token',
+		]);
+		$this->viewBuilder()->setOption('serialize', ['status', 'message']);
+		return;
+        }
+
         $this->request->allowMethod(['get']);
 
         $articles = $this->Articles->find()->toList();
@@ -86,12 +117,13 @@ class ArticlesController extends AppController
         ]);
 
         $this->viewBuilder()->setOption('serialize', ['status', 'message', 'data']);
-    }	
+    }
 	
     public function edit()
     {
         $header = $this->request->getHeaders();
-        if(!$this->verifyToken($header)){
+        $auth = $this->verifyToken($header);
+        if(!$auth){
 		$this->set([
 		    'status' => false,
 		    'message' => 'Invalid token',
@@ -111,8 +143,7 @@ class ArticlesController extends AppController
 
         if (!empty($article)) {
             // article exists
-            $article = $this->Articles->patchEntity($article, $articleInfo);
-
+            $article = $this->Articles->patchEntity($article, $articleInfo);	
             if ($this->Articles->save($article)) {
                 // success response
                 $status = true;

@@ -112,6 +112,7 @@ return function (RouteBuilder $routes): void {
 		// Articles api start
 		$routes->post('/articles', ['controller' => 'Articles', 'action' => 'add']);
 		$routes->get('/articles', ['controller' => 'Articles', 'action' => 'index']);
+		$routes->get('/articlesAll', ['controller' => 'Articles', 'action' => 'getAll']);
 		$routes->put('/articles/{id}', ['controller' => 'Articles', 'action' => 'edit'])->setPass(['id']);
 		$routes->delete('/articles/{id}', ['controller' => 'Articles', 'action' => 'delete'])->setPass(['id']);
 		//Articles api end

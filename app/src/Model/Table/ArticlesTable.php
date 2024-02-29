@@ -53,6 +53,11 @@ class ArticlesTable extends Table
             'foreignKey' => 'user_id',
             'joinType' => 'INNER',
         ]);
+        
+        $this->belongsTo('Likes', [
+            'foreignKey' => 'article_id',
+            'joinType' => 'INNER',
+        ]);
     }
 
     /**

@@ -40,21 +40,16 @@ The application should now be accessible at http://localhost:34251
 
 ### Authentication
 
-TODO: pls summarize how to check "Authentication" bahavior
-
-"Using login API endpoint you can post user email, and password if we have account with this detail we are generating a token and adding for this user in table, then we are sending response for this API with user detail and token. This token we have to send in header of each API request."(End points detail are listing below)
+Login API will be used to authenticate the user. It accept user email, and password. If we have account with this detail we are generating a token and adding for this user in table, then we are sending response for this API with user detail and token. This token will be used to perform user based activity like managing arctile and like feature.
 
 ### Article Management
 
-TODO: pls summarize how to check "Article Management" bahavior
-
-"I have create API endpoint to get all articles from system, endpoint for create new Article, get their own articles, update any article and delete any article" (End points detail are listing below)
+To manage the Arcticle, have created couple of endpoints to perform CRUD operation. Those endpoints are protected and accepts "Access-token" in header to authenticate the user.
 
 ### Like Feature
 
-TODO: pls summarize how to check "Like Feature" bahavior
 
-"I have create API end point for like and article, current logged in user can like any article. Like count for article we will get in response of get articles API." (End points detail are listing below)
+I have create API end point for like an article. Authorized user can like any article. Like count for article we will get in response of get articles API." (End points detail are listing below)
 
 ### Accessing the Database Port
 
@@ -70,7 +65,7 @@ SQL: pls import postman collection api file in postman and postman file (apiTest
 
 ######## api endpoints #########
 
-### USER ALL API
+### USER API
 
 ### Get all users (You can use it if require otherwise leave it)
 1. api/users.json
@@ -113,7 +108,7 @@ SQL: pls import postman collection api file in postman and postman file (apiTest
    header: Access-token
 
 
-### ARTICLE ALL API ###
+### ARTICLE API ###
 
 ### get current logged in user articles
 1. api/articles.json
@@ -130,8 +125,8 @@ SQL: pls import postman collection api file in postman and postman file (apiTest
 	"body": "This is a CakePHP Development"
    } 
 
-### update article
-3. api/articles/1 
+### Update article
+3. api/articles/:id
     method: put 
     header: Access-token 
     body: {
@@ -139,8 +134,8 @@ SQL: pls import postman collection api file in postman and postman file (apiTest
 	"body": "This is a CakePHP Development"
     },
 
-### delete aritlce
-4. api/articles/1 
+### Delete aritlce
+4. api/articles/:id
     method = delete 
     header parameter =  Access-token,
 
@@ -150,7 +145,7 @@ SQL: pls import postman collection api file in postman and postman file (apiTest
     header: Access-token
 
 
-### LIKE ALL API
+### LIKE API
 
 ### add like for article
 1. api/likes.json 
